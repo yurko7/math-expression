@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>YuKu.Math.Expression</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Yuriy Kushnir</authors>
+    <owners>Yuriy Kushnir</owners>
+    <projectUrl>https://github.com/yurko7/math-expression</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Math Evaluator Parser</tags>
+  </metadata>
+</package>
