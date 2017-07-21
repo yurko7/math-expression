@@ -142,14 +142,7 @@ namespace YuKu.MathExpression
 
             Int32 location;
             String text = ConsumeBuffer(out location);
-            if (text == "t" || text == "T")
-            {
-                token = new Token(TokenType.Parameter, location);
-            }
-            else
-            {
-                token = new Token(TokenType.Identifier, location, text);
-            }
+            token = new Token(TokenType.Identifier, location, text);
             return ReadToken;
         }
 

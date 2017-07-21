@@ -11,7 +11,6 @@
         Divide,
         Power,
         Number,
-        Parameter,
         Identifier
     }
 }

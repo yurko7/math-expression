@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -17,23 +18,22 @@ namespace YuKu.MathExpression
 
             RegisterToken(0, ParseGroup, TokenType.LParen);
             RegisterToken(0, ParseNumber, TokenType.Number);
-            RegisterToken(0, ParseParameter, TokenType.Parameter);
             RegisterToken(1, ParseAdd, TokenType.Plus);
             RegisterToken(1, ParseSubtract, TokenType.Minus);
             RegisterToken(2, ParseMultiply, TokenType.Multiply);
-            RegisterToken(2, ParseImpliedMultiply, TokenType.LParen, TokenType.Number, TokenType.Parameter, TokenType.Identifier);
+            RegisterToken(2, ParseImpliedMultiply, TokenType.LParen, TokenType.Number, TokenType.Identifier);
             RegisterToken(2, ParseDivide, TokenType.Divide);
             RegisterToken(3, ParsePower, TokenType.Power);
             RegisterToken(4, ParseNegate, TokenType.Minus);
-            RegisterToken(5, ParseCall, TokenType.Identifier);
+            RegisterToken(5, ParseIdentifier, TokenType.Identifier);
         }
 
-        public Expression Parse(IEnumerable<Token> tokens, Expression parameter)
+        public Expression Parse(IEnumerable<Token> tokens, IEnumerable<ParameterExpression> parameters)
         {
             try
             {
                 _tokens = tokens.GetEnumerator();
-                _parameter = parameter;
+                _parameters = parameters.ToDictionary(param => param.Name, StringComparer.OrdinalIgnoreCase);
                 Advance();
                 return ParseExpression(0);
             }
@@ -41,7 +41,7 @@ namespace YuKu.MathExpression
             {
                 _tokens.Dispose();
                 _tokens = null;
-                _parameter = null;
+                _parameters = null;
                 _lookahead = new Token();
             }
         }
@@ -110,12 +110,6 @@ namespace YuKu.MathExpression
             return Expression.Negate(expression);
         }
 
-        private Expression ParseParameter(Int32 rightBindingPower)
-        {
-            Match(TokenType.Parameter);
-            return _parameter;
-        }
-
         private Expression ParseAdd(Int32 rightBindingPower, Expression leftExpression)
         {
             Match(TokenType.Plus);
@@ -157,22 +151,33 @@ namespace YuKu.MathExpression
             return Expression.Power(leftExpression, rightExpression);
         }
 
-        private Expression ParseCall(Int32 rightBindingPower)
+        private Expression ParseIdentifier(Int32 rightBindingPower)
         {
             Token identifier = Match(TokenType.Identifier);
-            if (String.Equals(identifier.Text, "PI", StringComparison.OrdinalIgnoreCase) ||
-                String.Equals(identifier.Text, "E", StringComparison.OrdinalIgnoreCase))
+
+            ParameterExpression parameter;
+            if (_parameters.TryGetValue(identifier.Text, out parameter))
             {
-                FieldInfo field = typeof(Math).GetField(
-                    identifier.Text,
-                    BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase);
+                return parameter;
+            }
+
+            Type typeMath = typeof(Math);
+            FieldInfo field = typeMath.GetField(
+                identifier.Text,
+                BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase);
+            if (field != null)
+            {
                 return Expression.Field(null, field);
             }
 
-            MethodInfo method = typeof(Math).GetMethod(
+            MethodInfo method = typeMath.GetMethod(
                 identifier.Text,
                 BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase,
                 null, new[] {typeof(Double)}, null);
+            if (method == null)
+            {
+                throw new InvalidOperationException($"Unknown identifier \"{identifier.Text}\" ({identifier.Location})");
+            }
             Expression argExpression = ParseExpression(rightBindingPower);
             return Expression.Call(method, argExpression);
         }
@@ -245,7 +250,7 @@ namespace YuKu.MathExpression
         }
 
         private IEnumerator<Token> _tokens;
-        private Expression _parameter;
+        private Dictionary<String, ParameterExpression> _parameters;
         private Token _lookahead;
         private readonly Dictionary<TokenType, NullDenotation> _nullDenotations;
         private readonly Dictionary<TokenType, LeftDenotation> _leftDenotations;
