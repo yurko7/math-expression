@@ -28,11 +28,11 @@ namespace YuKu.MathExpression
             RegisterToken(5, ParseIdentifier, TokenType.Identifier);
         }
 
-        public Expression Parse(IEnumerable<Token> tokens, IEnumerable<ParameterExpression> parameters)
+        public Expression Parse(IEnumerator<Token> tokens, IEnumerable<ParameterExpression> parameters)
         {
             try
             {
-                _tokens = tokens.GetEnumerator();
+                _tokens = tokens;
                 _parameters = parameters.ToDictionary(param => param.Name, StringComparer.OrdinalIgnoreCase);
                 Advance();
                 return ParseExpression(0);

@@ -6,34 +6,45 @@ using System.Text;
 
 namespace YuKu.MathExpression
 {
-    public sealed class Lexer : IEnumerable<Token>
+    public sealed class Lexer : IEnumerator<Token>
     {
         public Lexer(TextReader textReader)
         {
             _textReader = textReader;
             _buffer = new StringBuilder();
+            _state = ReadToken;
             Advance();
         }
 
-        public IEnumerator<Token> GetEnumerator()
+        public Token Current { get; private set; }
+
+        object IEnumerator.Current => Current;
+
+        public Boolean MoveNext()
         {
-            LexerState state = ReadToken;
-            while (state != null)
+            if (_state == null)
             {
-                Token? token;
-                state = state(out token);
-                if (token.HasValue)
-                {
-                    yield return token.Value;
-                }
+                return false;
             }
-            yield return new Token(TokenType.EOF, _location);
+
+            Token? token;
+            do
+            {
+                _state = _state(out token);
+            }
+            while (token == null && _state != null);
+
+            Current = token ?? default(Token);
+            return token.HasValue;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public void Reset()
         {
-            return GetEnumerator();
+            throw new InvalidOperationException();
         }
+
+        public void Dispose()
+        { }
 
         private LexerState ReadToken(out Token? token)
         {
@@ -83,7 +94,7 @@ namespace YuKu.MathExpression
                     Advance();
                     return ReadToken;
                 case EOF:
-                    token = null;
+                    token = new Token(TokenType.EOF, _location);
                     return null;
             }
             throw UnexpectedCharacter();
@@ -216,5 +227,6 @@ namespace YuKu.MathExpression
         private Char _lookahead;
         private readonly StringBuilder _buffer;
         private Int32 _bufferLocation;
+        private LexerState _state;
     }
 }

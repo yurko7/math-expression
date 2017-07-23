@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,6 +8,11 @@ namespace YuKu.MathExpression
 {
     public static class Extensions
     {
+        public static IEnumerator<Token> GetEnumerator(this TextReader mathExpression)
+        {
+            return new Lexer(mathExpression);
+        }
+
         public static TDelegate Compile<TDelegate>(this String mathExpression, params String[] parameterNames)
         {
             using (var reader = new StringReader(mathExpression))
