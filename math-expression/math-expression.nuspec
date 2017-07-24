@@ -11,6 +11,6 @@
     <description>$description$</description>
     <releaseNotes></releaseNotes>
     <copyright>$copyright$</copyright>
-    <tags>Math Expression Evaluator Parser</tags>
+    <tags>Math Expression Evaluator Parser Compiler</tags>
   </metadata>
 </package>
