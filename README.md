@@ -10,7 +10,8 @@ Math-Expression is a library for parsing and compiling simple mathematical expre
  * Negation (unary minus): `-`x
  * Exponents (x<sup>y</sup>): x`^`y
  * Multiplication: x`*`y
- * Division: y`/`y
+ * Division: x`/`y
+ * Modulo: x`%`y
  * Addition: x`+`y
  * Subtraction: x`-`y
  * Number literals: `7`, `3.1415`
@@ -31,7 +32,7 @@ From highest to lowest:
 | Primary | function call |
 | Unary | `-` |
 | Exponentiation | `^` |
-| Multiplication | `*`, _implied multiplication_, `/` |
+| Multiplication | `*`, _implied multiplication_, `/`, `%` |
 | Addition | `+`, `-` |
 
 When an operand occurs between two operators with the same precedence, the associativity of the operators controls the order in which the operations are performed:

@@ -23,6 +23,7 @@ namespace YuKu.MathExpression
             RegisterToken(2, ParseMultiply, TokenType.Multiply);
             RegisterToken(2, ParseImpliedMultiply, TokenType.LParen, TokenType.Number, TokenType.Identifier);
             RegisterToken(2, ParseDivide, TokenType.Divide);
+            RegisterToken(2, ParseModulo, TokenType.Modulo);
             RegisterToken(3, ParsePower, TokenType.Power);
             RegisterToken(4, ParseNegate, TokenType.Minus);
             RegisterToken(5, ParseIdentifier, TokenType.Identifier);
@@ -142,6 +143,13 @@ namespace YuKu.MathExpression
             Match(TokenType.Divide);
             Expression rightExpression = ParseExpression(rightBindingPower);
             return Expression.Divide(leftExpression, rightExpression);
+        }
+
+        private Expression ParseModulo(Int32 rightBindingPower, Expression leftExpression)
+        {
+            Match(TokenType.Modulo);
+            Expression rightExpression = ParseExpression(rightBindingPower);
+            return Expression.Modulo(leftExpression, rightExpression);
         }
 
         private Expression ParsePower(Int32 rightBindingPower, Expression leftExpression)

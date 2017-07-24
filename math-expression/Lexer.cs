@@ -89,6 +89,10 @@ namespace YuKu.MathExpression
                     token = new Token(TokenType.Divide, _location);
                     Advance();
                     return ReadToken;
+                case '%':
+                    token = new Token(TokenType.Modulo, _location);
+                    Advance();
+                    return ReadToken;
                 case '^':
                     token = new Token(TokenType.Power, _location);
                     Advance();

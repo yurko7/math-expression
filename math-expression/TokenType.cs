@@ -9,6 +9,7 @@
         Minus,
         Multiply,
         Divide,
+        Modulo,
         Power,
         Number,
         Identifier
