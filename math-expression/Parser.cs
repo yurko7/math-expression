@@ -73,13 +73,13 @@ namespace YuKu.MathExpression
             }
         }
 
-        private Expression ParseExpression(Int32 rightBindingPower)
+        private Expression ParseExpression(Int32 leftBindingPower)
         {
             NullDenotation nullDenotation = _nullDenotations[_lookahead.Type];
             Expression expression = nullDenotation.Invoke();
 
             LeftDenotation leftDenotation = _leftDenotations[_lookahead.Type];
-            while (leftDenotation != null && leftDenotation.LeftBindingPower > rightBindingPower)
+            while (leftDenotation != null && leftDenotation.LeftBindingPower > leftBindingPower)
             {
                 expression = leftDenotation.Invoke(expression);
                 leftDenotation = _leftDenotations[_lookahead.Type];
@@ -88,78 +88,78 @@ namespace YuKu.MathExpression
             return expression;
         }
 
-        private Expression ParseGroup(Int32 rightBindingPower)
+        private Expression ParseGroup(Int32 leftBindingPower)
         {
             Match(TokenType.LParen);
-            Expression expression = ParseExpression(rightBindingPower);
+            Expression expression = ParseExpression(leftBindingPower);
             Match(TokenType.RParen);
 
             return expression;
         }
 
-        private Expression ParseNumber(Int32 rightBindingPower)
+        private Expression ParseNumber(Int32 leftBindingPower)
         {
             Token token = Match(TokenType.Number);
             Double value = Double.Parse(token.Text, CultureInfo.InvariantCulture);
             return Expression.Constant(value);
         }
 
-        private Expression ParseNegate(Int32 rightBindingPower)
+        private Expression ParseNegate(Int32 leftBindingPower)
         {
             Match(TokenType.Minus);
-            Expression expression = ParseExpression(rightBindingPower);
+            Expression expression = ParseExpression(leftBindingPower);
             return Expression.Negate(expression);
         }
 
-        private Expression ParseAdd(Int32 rightBindingPower, Expression leftExpression)
+        private Expression ParseAdd(Int32 leftBindingPower, Expression leftExpression)
         {
             Match(TokenType.Plus);
-            Expression rightExpression = ParseExpression(rightBindingPower);
+            Expression rightExpression = ParseExpression(leftBindingPower);
             return Expression.Add(leftExpression, rightExpression);
         }
 
-        private Expression ParseSubtract(Int32 rightBindingPower, Expression leftExpression)
+        private Expression ParseSubtract(Int32 leftBindingPower, Expression leftExpression)
         {
             Match(TokenType.Minus);
-            Expression rightExpression = ParseExpression(rightBindingPower);
+            Expression rightExpression = ParseExpression(leftBindingPower);
             return Expression.Subtract(leftExpression, rightExpression);
         }
 
-        private Expression ParseMultiply(Int32 rightBindingPower, Expression leftExpression)
+        private Expression ParseMultiply(Int32 leftBindingPower, Expression leftExpression)
         {
             Match(TokenType.Multiply);
-            Expression rightExpression = ParseExpression(rightBindingPower);
+            Expression rightExpression = ParseExpression(leftBindingPower);
             return Expression.Multiply(leftExpression, rightExpression);
         }
 
-        private Expression ParseImpliedMultiply(Int32 rightBindingPower, Expression leftExpression)
+        private Expression ParseImpliedMultiply(Int32 leftBindingPower, Expression leftExpression)
         {
-            Expression rightExpression = ParseExpression(rightBindingPower);
+            Expression rightExpression = ParseExpression(leftBindingPower);
             return Expression.Multiply(leftExpression, rightExpression);
         }
 
-        private Expression ParseDivide(Int32 rightBindingPower, Expression leftExpression)
+        private Expression ParseDivide(Int32 leftBindingPower, Expression leftExpression)
         {
             Match(TokenType.Divide);
-            Expression rightExpression = ParseExpression(rightBindingPower);
+            Expression rightExpression = ParseExpression(leftBindingPower);
             return Expression.Divide(leftExpression, rightExpression);
         }
 
-        private Expression ParseModulo(Int32 rightBindingPower, Expression leftExpression)
+        private Expression ParseModulo(Int32 leftBindingPower, Expression leftExpression)
         {
             Match(TokenType.Modulo);
-            Expression rightExpression = ParseExpression(rightBindingPower);
+            Expression rightExpression = ParseExpression(leftBindingPower);
             return Expression.Modulo(leftExpression, rightExpression);
         }
 
-        private Expression ParsePower(Int32 rightBindingPower, Expression leftExpression)
+        private Expression ParsePower(Int32 leftBindingPower, Expression leftExpression)
         {
             Match(TokenType.Power);
-            Expression rightExpression = ParseExpression(rightBindingPower - 1);
+            Expression rightExpression = ParseExpression(leftBindingPower - 1);
             return Expression.Power(leftExpression, rightExpression);
         }
 
-        private Expression ParseIdentifier(Int32 rightBindingPower)
+        private Expression ParseIdentifier(Int32 leftBindingPower)
         {
             Token identifier = Match(TokenType.Identifier);
 
@@ -186,7 +186,7 @@ namespace YuKu.MathExpression
             {
                 throw new InvalidOperationException($"Unknown identifier \"{identifier.Text}\" ({identifier.Location})");
             }
-            Expression argExpression = ParseExpression(rightBindingPower);
+            Expression argExpression = ParseExpression(leftBindingPower);
             return Expression.Call(method, argExpression);
         }
 
