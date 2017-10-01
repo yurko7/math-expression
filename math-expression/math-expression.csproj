@@ -13,6 +13,10 @@
     <Product>YuKu.MathExpression</Product>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Description>Simple compiler of mathematical expressions.</Description>
+    <RepositoryUrl>git@github.com:yurko7/math-expression.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIconUrl>https://github.com/yurko7/math-expression/raw/master/math-expression/Icon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://github.com/yurko7/math-expression/raw/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
