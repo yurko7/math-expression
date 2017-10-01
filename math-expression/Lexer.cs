@@ -34,7 +34,7 @@ namespace YuKu.MathExpression
             }
             while (token == null && _state != null);
 
-            Current = token ?? default(Token);
+            Current = token ?? default;
             return token.HasValue;
         }
 
@@ -48,23 +48,17 @@ namespace YuKu.MathExpression
 
         private LexerState ReadToken(out Token? token)
         {
-            if (Char.IsWhiteSpace(_lookahead))
-            {
-                token = null;
-                return SkipWhiteSpace;
-            }
-            if (Char.IsDigit(_lookahead))
-            {
-                token = null;
-                return ReadNumber;
-            }
-            if (Char.IsLetter(_lookahead))
-            {
-                token = null;
-                return ReadIdentifier;
-            }
             switch (_lookahead)
             {
+                case var lookahead when Char.IsWhiteSpace(lookahead):
+                    token = null;
+                    return SkipWhiteSpace;
+                case var lookahead when Char.IsDigit(lookahead):
+                    token = null;
+                    return ReadNumber;
+                case var lookahead when Char.IsLetter(lookahead):
+                    token = null;
+                    return ReadIdentifier;
                 case '(':
                     token = new Token(TokenType.LParen, _location);
                     Advance();
@@ -127,8 +121,7 @@ namespace YuKu.MathExpression
                 return ReadFloat;
             }
 
-            Int32 location;
-            String text = ConsumeBuffer(out location);
+            String text = ConsumeBuffer(out Int32 location);
             token = new Token(TokenType.Number, location, text);
             return ReadToken;
         }
@@ -141,8 +134,7 @@ namespace YuKu.MathExpression
                 Consume();
             }
 
-            Int32 location;
-            String text = ConsumeBuffer(out location);
+            String text = ConsumeBuffer(out Int32 location);
             token = new Token(TokenType.Number, location, text);
             return ReadToken;
         }
@@ -155,8 +147,7 @@ namespace YuKu.MathExpression
                 Consume();
             }
 
-            Int32 location;
-            String text = ConsumeBuffer(out location);
+            String text = ConsumeBuffer(out Int32 location);
             token = new Token(TokenType.Identifier, location, text);
             return ReadToken;
         }

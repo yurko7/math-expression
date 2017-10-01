@@ -163,8 +163,7 @@ namespace YuKu.MathExpression
         {
             Token identifier = Match(TokenType.Identifier);
 
-            ParameterExpression parameter;
-            if (_parameters.TryGetValue(identifier.Text, out parameter))
+            if (_parameters.TryGetValue(identifier.Text, out ParameterExpression parameter))
             {
                 return parameter;
             }
