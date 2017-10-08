@@ -43,21 +43,21 @@ Precedence and associativity can be controlled using parentheses. For example, `
 
 ## Functions
 
-Any method from `System.Math` class that takes single `Double` parameter and returns `Double` can be used as a function.
+External functions are supported via modules - a types with static methods and fields. Any method from added modules that takes single `Double` parameter and returns `Double` can be used as a function.
 Subexpresson that follows function name will be used as function parameter. For example, `sin 2t` is evaluated as `((sin(2))*t)`, but `sin(2t)` is evaluated as `(sin(2*t))`.
 
-Public fields of `System.Math` class can be used as a constants (`pi`, `e`).
+Public fields of added modules can be used as a constants.
 
 ## Variables
 
-Any number of variables can be referenced from expression. To use variables just pass their names to [`Compile`](math-expression/Extensions.cs#L16) method. Compiled function will accept same number of parameter in the same order.
+Any number of variables can be referenced from expression. To use variables just specify their names using [`AddParameter`](math-expression/Extensions.cs#L9) method. Compiled function will accept same number of parameter in the same order.
 
 Variables takes precedence over functions and constants.
 
 ## Examples
 
 ``` csharp
-Func<Double, Double> func = "80(t - 3sin(2t))/(2pi)".Compile<Func<Double, Double>>("t");
+Func<Double, Double> func = "80(t - 3sin(2t))/(2pi)".AddModule(typeof(Math)).AddParameter("t").Compile<Func<Double, Double>>();
 Func<Double, Double> csFunc = t => 80 * (t - 3 * Math.Sin(2 * t)) / (2 * Math.PI);
 Assert.AreEqual(func(1.0), csFunc(1.0));
 ```
