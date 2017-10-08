@@ -11,7 +11,7 @@
     <Authors>Yuriy Kushnir</Authors>
     <Company>YuKu</Company>
     <Product>YuKu.MathExpression</Product>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Simple compiler of mathematical expressions.</Description>
     <RepositoryUrl>git@github.com:yurko7/math-expression.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -28,6 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
 </Project>
