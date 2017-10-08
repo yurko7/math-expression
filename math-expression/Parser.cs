@@ -29,12 +29,13 @@ namespace YuKu.MathExpression
             RegisterToken(5, ParseIdentifier, TokenType.Identifier);
         }
 
-        public Expression Parse(IEnumerator<Token> tokens, IEnumerable<ParameterExpression> parameters)
+        public Expression Parse(IEnumerator<Token> tokens, IEnumerable<ParameterExpression> parameters, IEnumerable<Type> modules)
         {
             try
             {
                 _tokens = tokens;
                 _parameters = parameters.ToDictionary(param => param.Name, StringComparer.OrdinalIgnoreCase);
+                _modules = modules;
                 Advance();
                 return ParseExpression(0);
             }
@@ -43,6 +44,7 @@ namespace YuKu.MathExpression
                 _tokens.Dispose();
                 _tokens = null;
                 _parameters = null;
+                _modules = null;
                 _lookahead = new Token();
             }
         }
@@ -168,25 +170,35 @@ namespace YuKu.MathExpression
                 return parameter;
             }
 
-            Type typeMath = typeof(Math);
-            FieldInfo field = typeMath.GetField(
-                identifier.Text,
-                BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase);
-            if (field != null)
+            MemberInfo member = GetModuleMember(identifier.Text);
+            switch (member)
             {
-                return Expression.Field(null, field);
-            }
+                case FieldInfo field:
+                    return Expression.Field(null, field);
 
-            MethodInfo method = typeMath.GetMethod(
-                identifier.Text,
-                BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase,
-                null, new[] {typeof(Double)}, null);
-            if (method == null)
-            {
-                throw new InvalidOperationException($"Unknown identifier \"{identifier.Text}\" ({identifier.Location})");
+                case MethodInfo method:
+                    Expression argExpression = ParseExpression(leftBindingPower);
+                    return Expression.Call(method, argExpression);
             }
-            Expression argExpression = ParseExpression(leftBindingPower);
-            return Expression.Call(method, argExpression);
+            throw new InvalidOperationException($"Unknown identifier \"{identifier.Text}\" ({identifier.Location})");
+        }
+
+        private MemberInfo GetModuleMember(String identifier)
+        {
+            foreach (Type module in _modules)
+            {
+                MemberInfo member =
+                    module.GetField(identifier,
+                        BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase) ??
+                    (MemberInfo) module.GetMethod(identifier,
+                        BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase,
+                        null, new[] {typeof(Double)}, null);
+                if (member != null)
+                {
+                    return member;
+                }
+            }
+            return null;
         }
 
         private Token Match(TokenType tokenType)
@@ -258,6 +270,7 @@ namespace YuKu.MathExpression
 
         private IEnumerator<Token> _tokens;
         private Dictionary<String, ParameterExpression> _parameters;
+        private IEnumerable<Type> _modules;
         private Token _lookahead;
         private readonly Dictionary<TokenType, NullDenotation> _nullDenotations;
         private readonly Dictionary<TokenType, LeftDenotation> _leftDenotations;

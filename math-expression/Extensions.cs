@@ -1,37 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace YuKu.MathExpression
 {
     public static class Extensions
     {
-        public static IEnumerator<Token> GetEnumerator(this TextReader mathExpression)
+        public static ICompiler AddParameter(this String mathExpression, String parameterName)
         {
-            return new Lexer(mathExpression);
+            var compiler = new Compiler(mathExpression)
+                .AddParameter(parameterName);
+            return compiler;
+        }
+
+        public static ICompiler AddParameters(this String mathExpression, params String[] parameterNames)
+        {
+            var compiler = new Compiler(mathExpression)
+                .AddParameters(parameterNames);
+            return compiler;
+        }
+
+        public static ICompiler AddMathModule(this String mathExpression)
+        {
+            var compiler = new Compiler(mathExpression)
+                .AddMathModule();
+            return compiler;
+        }
+
+        public static ICompiler AddModule(this String mathExpression, Type module)
+        {
+            var compiler = new Compiler(mathExpression)
+                .AddModule(module);
+            return compiler;
+        }
+
+        public static ICompiler AddModules(this String mathExpression, params Type[] modules)
+        {
+            var compiler = new Compiler(mathExpression)
+                .AddModules(modules);
+            return compiler;
+        }
+
+        public static ICompiler AddParameters(this ICompiler compiler, IEnumerable<String> parameterNames)
+        {
+            return parameterNames.Aggregate(compiler, (current, parameterName) => current.AddParameter(parameterName));
+        }
+
+        public static ICompiler AddMathModule(this ICompiler compiler)
+        {
+            compiler = compiler.AddModule(typeof(Math));
+            return compiler;
+        }
+
+        public static ICompiler AddModules(this ICompiler compiler, IEnumerable<Type> modules)
+        {
+            return modules.Aggregate(compiler, (current, module) => current.AddModule(module));
         }
 
         public static TDelegate Compile<TDelegate>(this String mathExpression, params String[] parameterNames)
         {
-            using (var reader = new StringReader(mathExpression))
-            {
-                return reader.Compile<TDelegate>(parameterNames);
-            }
-        }
-
-        public static TDelegate Compile<TDelegate>(this TextReader mathExpression, params String[] parameterNames)
-        {
-            ParameterExpression[] parameters = parameterNames
-                .Select(param => Expression.Parameter(typeof(Double), param))
-                .ToArray();
-            var lexer = new Lexer(mathExpression);
-            var parser = new Parser();
-            Expression expression = parser.Parse(lexer, parameters);
-
-            Expression<TDelegate> lambda = Expression.Lambda<TDelegate>(expression, parameters);
-            return lambda.Compile();
+            var compiler = new Compiler(mathExpression)
+                .AddParameters(parameterNames)
+                .AddModule(typeof(Math));
+            return compiler.Compile<TDelegate>();
         }
     }
 }
