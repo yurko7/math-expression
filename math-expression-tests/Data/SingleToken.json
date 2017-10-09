@@ -1,0 +1,67 @@
+﻿{
+  "displayName": "\"{0}\" is {1}",
+  "data": [
+    {
+      "input": "0",
+      "token": "Number",
+      "text": true
+    },
+    {
+      "input": " 000",
+      "token": "Number",
+      "text": true
+    },
+    {
+      "input": "0123 ",
+      "token": "Number",
+      "text": true
+    },
+    {
+      "input": "a  ",
+      "token": "Identifier",
+      "text": true
+    },
+    {
+      "input": " sin",
+      "token": "Identifier",
+      "text": true
+    },
+    {
+      "input": "  tan2  ",
+      "token": "Identifier",
+      "text": true
+    },
+    {
+      "input": " (",
+      "token": "LParen"
+    },
+    {
+      "input": ") ",
+      "token": "RParen"
+    },
+    {
+      "input": "+",
+      "token": "Plus"
+    },
+    {
+      "input": " - ",
+      "token": "Minus"
+    },
+    {
+      "input": "*",
+      "token": "Multiply"
+    },
+    {
+      "input": "/",
+      "token": "Divide"
+    },
+    {
+      "input": "%",
+      "token": "Modulo"
+    },
+    {
+      "input": "  ^",
+      "token": "Power"
+    }
+  ]
+}
