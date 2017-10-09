@@ -188,10 +188,6 @@ namespace YuKu.MathExpression
                 ++_location;
                 _lookahead = EOF;
             }
-            else
-            {
-                throw new InvalidOperationException("Advance after EOF");
-            }
         }
 
         private String PreviewBuffer()
