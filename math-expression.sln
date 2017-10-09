@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "math-expression", "math-expression\math-expression.csproj", "{A589158D-4BAC-47E2-B5DD-476C5DCB5B67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "math-expression-tests", "math-expression-tests\math-expression-tests.csproj", "{C7D55DFC-2608-4A96-AE1D-6819C4F6803A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A589158D-4BAC-47E2-B5DD-476C5DCB5B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A589158D-4BAC-47E2-B5DD-476C5DCB5B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A589158D-4BAC-47E2-B5DD-476C5DCB5B67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7D55DFC-2608-4A96-AE1D-6819C4F6803A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7D55DFC-2608-4A96-AE1D-6819C4F6803A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7D55DFC-2608-4A96-AE1D-6819C4F6803A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7D55DFC-2608-4A96-AE1D-6819C4F6803A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
