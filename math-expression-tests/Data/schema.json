@@ -1,0 +1,23 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "JSON Schema of test data files.",
+
+  "type": "object",
+
+  "properties": {
+    "displayName": {
+      "type": "string",
+      "description": "Format string for display name of test cases."
+    },
+    "data": {
+      "type": "array",
+      "description": "An array of test data objects.",
+      "minItems": 1,
+      "items": {
+        "type": "object"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [ "displayName", "data" ]
+}
