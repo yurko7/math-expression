@@ -23,18 +23,15 @@ namespace YuKu.MathExpression.Tests
 
         [TestMethod]
         [JsonDataSource(@".\Data\SingleToken.json")]
-        public void SingleToken(String input, TokenType token, Boolean text)
+        public void SingleToken(String input, Token token)
         {
             using (var mathExpression = new StringReader(input))
             {
                 using (var lexer = new Lexer(mathExpression))
                 {
                     Assert.IsTrue(lexer.MoveNext());
-                    Assert.AreEqual(token, lexer.Current.Type);
-                    if (text)
-                    {
-                        Assert.AreEqual(input.Trim(), lexer.Current.Text);
-                    }
+                    Assert.AreEqual(token, lexer.Current);
+
                     Assert.IsTrue(lexer.MoveNext());
                     Assert.AreEqual(TokenType.EOF, lexer.Current.Type);
                     Assert.IsFalse(lexer.MoveNext());

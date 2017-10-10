@@ -3,65 +3,59 @@
   "data": [
     {
       "input": "0",
-      "token": "Number",
-      "text": true
+      "token": { "type": "Number", "location": 0, "text": "0" }
     },
     {
-      "input": " 000",
-      "token": "Number",
-      "text": true
+      "input": "   000",
+      "token": { "type": "Number", "location": 3, "text": "000" }
     },
     {
       "input": "0123 ",
-      "token": "Number",
-      "text": true
+      "token": { "type": "Number", "location": 0, "text": "0123" }
     },
     {
       "input": "a  ",
-      "token": "Identifier",
-      "text": true
+      "token": { "type": "Identifier", "location": 0, "text": "a" }
     },
     {
       "input": " sin",
-      "token": "Identifier",
-      "text": true
+      "token": { "type": "Identifier", "location": 1, "text": "sin" }
     },
     {
       "input": "  tan2  ",
-      "token": "Identifier",
-      "text": true
+      "token": { "type": "Identifier", "location": 2, "text": "tan2" }
     },
     {
       "input": " (",
-      "token": "LParen"
+      "token": { "type": "LParen", "location": 1, "text": null }
     },
     {
       "input": ") ",
-      "token": "RParen"
+      "token": { "type": "RParen", "location": 0, "text": null }
     },
     {
       "input": "+",
-      "token": "Plus"
+      "token": { "type": "Plus", "location": 0, "text": null }
     },
     {
       "input": " - ",
-      "token": "Minus"
+      "token": { "type": "Minus", "location": 1, "text": null }
     },
     {
       "input": "*",
-      "token": "Multiply"
+      "token": { "type": "Multiply", "location": 0, "text": null }
     },
     {
       "input": "/",
-      "token": "Divide"
+      "token": { "type": "Divide", "location": 0, "text": null }
     },
     {
       "input": "%",
-      "token": "Modulo"
+      "token": { "type": "Modulo", "location": 0, "text": null }
     },
     {
       "input": "  ^",
-      "token": "Power"
+      "token": { "type": "Power", "location": 2, "text": null }
     }
   ]
 }
