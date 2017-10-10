@@ -217,7 +217,7 @@ namespace YuKu.MathExpression
         private Int32 _location = -1;
         private Char _lookahead;
         private readonly StringBuilder _buffer;
-        private Int32 _bufferLocation;
+        private Int32 _bufferLocation = -1;
         private LexerState _state;
     }
 }
