@@ -1,0 +1,107 @@
+﻿{
+  "displayName": "\"{0}\"",
+  "data": [
+    {
+      "input": "0",
+      "tokens": [
+        { "type": "Number", "location": 0, "text": "0" }
+      ]
+    },
+    {
+      "input": "   000",
+      "tokens": [
+        { "type": "Number", "location": 3, "text": "000" }
+      ]
+    },
+    {
+      "input": "0123 ",
+      "tokens": [
+        { "type": "Number", "location": 0, "text": "0123" }
+      ]
+    },
+    {
+      "input": "a  ",
+      "tokens": [
+        { "type": "Identifier", "location": 0, "text": "a" }
+      ]
+    },
+    {
+      "input": " sin",
+      "tokens": [
+        { "type": "Identifier", "location": 1, "text": "sin" }
+      ]
+    },
+    {
+      "input": "  tan2  ",
+      "tokens": [
+        { "type": "Identifier", "location": 2, "text": "tan2" }
+      ]
+    },
+    {
+      "input": " (",
+      "tokens": [
+        { "type": "LParen", "location": 1, "text": null }
+      ]
+    },
+    {
+      "input": ") ",
+      "tokens": [
+        { "type": "RParen", "location": 0, "text": null }
+      ]
+    },
+    {
+      "input": "+",
+      "tokens": [
+        { "type": "Plus", "location": 0, "text": null }
+      ]
+    },
+    {
+      "input": " - ",
+      "tokens": [
+        { "type": "Minus", "location": 1, "text": null }
+      ]
+    },
+    {
+      "input": "*",
+      "tokens": [
+        { "type": "Multiply", "location": 0, "text": null }
+      ]
+    },
+    {
+      "input": "/",
+      "tokens": [
+        { "type": "Divide", "location": 0, "text": null }
+      ]
+    },
+    {
+      "input": "%",
+      "tokens": [
+        { "type": "Modulo", "location": 0, "text": null }
+      ]
+    },
+    {
+      "input": "  ^",
+      "tokens": [
+        { "type": "Power", "location": 2, "text": null }
+      ]
+    },
+    {
+      "input": "  80sin(2t)+01^%-*/ ",
+      "tokens": [
+        { "type": "Number", "location": 2, "text": "80" },
+        { "type": "Identifier", "location": 4, "text": "sin" },
+        { "type": "LParen", "location": 7, "text": null },
+        { "type": "Number", "location": 8, "text": "2" },
+        { "type": "Identifier", "location": 9, "text": "t" },
+        { "type": "RParen", "location": 10, "text": null },
+        { "type": "Plus", "location": 11, "text": null },
+        { "type": "Number", "location": 12, "text": "01" },
+        { "type": "Power", "location": 14, "text": null },
+        { "type": "Modulo", "location": 15, "text": null },
+        { "type": "Minus", "location": 16, "text": null },
+        { "type": "Multiply", "location": 17, "text": null },
+        { "type": "Divide", "location": 18, "text": null }
+      ]
+    }
+  ]
+}

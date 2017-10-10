@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\schema.json" />
-    <None Include="Data\SingleToken.json">
+    <None Include="Data\ValidTokens.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
